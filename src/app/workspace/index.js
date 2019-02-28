@@ -45,7 +45,7 @@ export function WrapList(List) {
   }
 }
 
-function Workspace({children}) {
+function Workspace({ children }) {
   return <div>{children}</div>
 }
 

@@ -11,12 +11,14 @@ div.dropable-container {
     padding-top: 5px;
     padding-bottom: 5px;
     width: 100%;
-    height: 2em;
+    height: 3em;
     margin: 2px auto;
     text-align: center;
+    cursor: pointer;
   }
 
   div.dropped.droppable {
-    height: 40em;
+    min-height: 10em;
+    height: 100%;
   }
 }

@@ -9,7 +9,7 @@ import { addChild } from '../model'
 
 function dropDropable(types) {
   return (Elem, props) => {
-    console.log('dropDropable called')
+    // console.log('dropDropable called')
     let Res = makeDropable(types, Elem)
     return <Res dropable={true} {...props} />
   }
@@ -35,7 +35,7 @@ const DroppedList = DroppedElem(WrapList(ListEl), dropDropable(ItemTypes.Input))
 
 registerRender(ItemTypes.List, spec => <DroppedList key={spec.key} spec={spec} />)
 
-function makeDragable(type, Elem) {
+function makeDragable(name, type) {
   const elemSource = {
     beginDrag(props) {
       return {
@@ -52,11 +52,11 @@ function makeDragable(type, Elem) {
   }
 
   function DraggleElement(props) {
-    let { connectDragSource, isDragging, ...rest } = props
+    let { connectDragSource } = props
 
     return connectDragSource(
-      <div style={{ width: '100%', height: '100%' }}>
-        <Elem {...rest} />
+      <div style={{ width: '100%' }}>
+        <span>{name}</span>
       </div>
     )
   }
@@ -64,12 +64,13 @@ function makeDragable(type, Elem) {
   return DragSource(type, elemSource, collect)(DraggleElement)
 }
 
-export const Input = makeDragable(ItemTypes.Input, InputEl)
-export const List = makeDragable(ItemTypes.List, ListEl)
+export const Input = makeDragable("输入框", ItemTypes.Input)
+export const List = makeDragable("列表", ItemTypes.Input)
 
 function makeDropable(types, Elem) {
   const dropTarget = {
     canDrop(props) {
+      // console.log('check canDrop: ' + JSON.stringify(props))
       // console.log('workspace canDrop called: ' + JSON.stringify(props))
       // should determine by the type of target
       return props && props.spec && props.spec.leaf === false
