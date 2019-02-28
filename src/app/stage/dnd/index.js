@@ -26,6 +26,8 @@ function DroppedElem(Elem, drop) {
       {!drop ? <Elem {...props} /> : drop(Elem, props)}
       <Icon type="edit" />
       <Icon type="delete" />
+      <Icon type="up" />
+      <Icon type="down" />
     </div>
   }
 }
