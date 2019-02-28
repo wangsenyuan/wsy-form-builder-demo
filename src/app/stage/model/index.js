@@ -1,4 +1,3 @@
-import React from 'react'
 import randomString from 'random-string'
 
 let observer = null

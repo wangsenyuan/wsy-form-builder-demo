@@ -6,6 +6,7 @@ import ListEl from '../../components/list'
 import WorkspaceEl, { registerRender, WrapList } from '../../workspace'
 import "./index.scss"
 import { addChild } from '../model'
+import { Icon } from 'antd';
 
 function dropDropable(types) {
   return (Elem, props) => {
@@ -23,6 +24,8 @@ function DroppedElem(Elem, drop) {
     }
     return <div className={className}>
       {!drop ? <Elem {...props} /> : drop(Elem, props)}
+      <Icon type="edit" />
+      <Icon type="delete" />
     </div>
   }
 }
@@ -77,7 +80,11 @@ function makeDropable(types, Elem) {
     },
 
     drop(props, monitor) {
-      console.log('workspace drop called')
+      const hasDroppedOnChild = monitor.didDrop()
+      if (hasDroppedOnChild) {
+        console.log('has already dropped on child target')
+        return
+      }
       //should update the spec
       let parentSpec = props.spec
       let item = monitor.getItem()
