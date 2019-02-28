@@ -7,12 +7,18 @@ div.stage {
   div.workspace {
     flex: 4;
     background-color: green;
+    display: flex;
+    flex-flow: row;
   }
 
   div.sidebar {
     flex: 1;
     display: flex;
-    flex-flow: row;
+    flex-flow: column;
     background-color: yellow;
+
+    .drag-item {
+      max-height: 5em;
+    }
   }
 }

@@ -1,0 +1,22 @@
+div.dropable-container {
+  > div {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+  }
+
+  div.dropped {
+    border-style: dotted;
+    border-width: thin;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    height: 2em;
+    margin: 2px auto;
+    text-align: center;
+  }
+
+  div.dropped.droppable {
+    height: 40em;
+  }
+}

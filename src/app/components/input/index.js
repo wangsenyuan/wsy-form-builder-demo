@@ -1,9 +1,10 @@
 import React from 'react'
 import { Input as InputEl } from 'antd'
+import "./index.scss"
 
 export default function Input(props) {
-  let { rdKey, ...rest } = props
+  let { spec, ...rest } = props
   return (
-    <InputEl key={rdKey} {...rest} />
+    <InputEl {...rest} className={"item"} />
   )
 }

@@ -1,60 +1,43 @@
 import React from 'react'
 import ItemTypes from '../constants'
-import InputEl from '../components/input'
-import { registerRender } from '../workspace'
-import { Workspace, Input } from './dnd'
+import { Workspace, Input, List } from './dnd'
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import "./index.scss"
+import { observe, getCurrentSpec } from './model'
 
-registerRender(ItemTypes.Input, spec => <InputEl key={spec.rdKey} spec={spec} />)
+function Stage({ rootSpec }) {
+  return (
+    <div className="stage">
+      <div className="workspace">
+        <Workspace spec={rootSpec} />
+      </div>
+      <div className="sidebar">
+        <Input className="drag-item" spec={{ type: ItemTypes.Input, leaf: true }} />
+        <List className="drag-item" spec={{ type: ItemTypes.List, leaf: false }} />
+      </div>
+    </div>
+  )
+}
 
-class Stage extends React.Component {
+class ObervedStage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      rootSpec: {
-        children: [],
-        leaf: false
-      }
+      rootSpec: getCurrentSpec()
     }
   }
-  addChild = (parentSpec, childSpec) => {
-    console.log('addChild called')
-    function loop(cur) {
-      if (cur === parentSpec) {
-        if (!cur.children) {
-          cur.children = []
-        }
 
-        let obj = { ...childSpec }
-        if (!obj.leaf) {
-          obj.addChild = this.addChild
-        }
-
-        cur.children.push(obj)
-      } else if (cur.children) {
-        cur.children = cur.children.map(item => loop(item))
-      }
-      return cur
-    }
-    let { rootSpec } = this.state
-    rootSpec = loop(rootSpec)
-    this.setState({ rootSpec })
+  componentDidMount() {
+    observe(rootSpec => {
+      this.setState(rootSpec)
+    })
   }
 
   render() {
-    return (
-      <div className="stage">
-        <div className="workspace">
-          <Workspace spec={this.state.rootSpec} addChild={this.addChild} />
-        </div>
-        <div className="sidebar">
-          <Input spec={{ type: ItemTypes.Input, leaf: true }} />
-        </div>
-      </div>
-    )
+    return <Stage rootSpec={this.state.rootSpec} />
   }
 }
 
-export default DragDropContext(HTML5Backend)(Stage)
+
+export default DragDropContext(HTML5Backend)(ObervedStage)

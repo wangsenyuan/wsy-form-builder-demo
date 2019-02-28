@@ -1,0 +1,13 @@
+div.list {
+  
+}
+
+div.vertical-list {
+  display: flex;
+  flex-flow: column;
+}
+
+div.horizontal-list {
+  display: flex;
+  flex-flow: row;
+}

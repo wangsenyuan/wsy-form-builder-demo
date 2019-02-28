@@ -3,7 +3,7 @@ import React from 'react'
 // import Input from '../components/input'
 
 let renders = {}
-let globalKey = 0
+
 export function registerRender(type, render) {
   if (!type || !render) {
     throw new Error("invalid argument")
@@ -22,15 +22,31 @@ function renderChild(child) {
     return null
   }
 
-  globalKey--
+  console.log('will render child (' + child.type + ')')
 
-  let childWithKey = Object.assign(child, { rdKey: globalKey })
-
-  return renders[child.type](childWithKey)
+  return renders[child.type](child)
 }
 
-export default function Workspace({ spec }) {
-  return <div>
-    {spec && spec.children.map(child => renderChild(child))}
-  </div>
+function length(arr) {
+  if (!arr) {
+    return 0
+  }
+  return arr.length
 }
+
+export function WrapList(List) {
+  return (props) => {
+    let { spec } = props
+    let { children } = spec
+    console.log('WrapList render children (' + length(children) + ') children')
+    return <List>
+      {children && children.map(child => renderChild(child))}
+    </List>
+  }
+}
+
+function Workspace({children}) {
+  return <div>{children}</div>
+}
+
+export default WrapList(Workspace)

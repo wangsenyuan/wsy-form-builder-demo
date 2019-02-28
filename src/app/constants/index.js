@@ -1,6 +1,7 @@
 const ItemTypes = {
   Input: "input",
-  Workspace: "workspace"
+  Workspace: "workspace",
+  List: "list"
 }
 
 export default ItemTypes

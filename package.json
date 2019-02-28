@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^3.13.6",
     "node-sass": "^4.11.0",
+    "random-string": "^0.2.0",
     "react": "^16.8.3",
     "react-dnd": "^7.0.2",
     "react-dnd-html5-backend": "^7.0.2",
