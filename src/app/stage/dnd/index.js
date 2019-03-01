@@ -1,12 +1,11 @@
 import React from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
 import ItemTypes from '../../constants'
-import InputEl from '../../components/input'
+import { Input as InputEl, Icon } from '../../components'
 import ListEl from '../../components/list'
-import WorkspaceEl, { registerRender, WrapList } from '../../workspace'
+import WorkspaceEl, { WrapList } from '../../workspace'
 import "./index.scss"
 import { addChild } from '../model'
-import { Icon } from 'antd';
 
 function dropDropable(types) {
   return (Elem, props) => {
@@ -16,7 +15,7 @@ function dropDropable(types) {
   }
 }
 
-function DroppedElem(Elem, drop) {
+function droppedElem(Elem, drop) {
   return props => {
     let className = "dropped"
     if (drop) {
@@ -31,14 +30,6 @@ function DroppedElem(Elem, drop) {
     </div>
   }
 }
-
-const DroppedInput = DroppedElem(InputEl)
-
-registerRender(ItemTypes.Input, spec => <DroppedInput key={spec.key} spec={spec} />)
-
-const DroppedList = DroppedElem(WrapList(ListEl), dropDropable(ItemTypes.Input))
-
-registerRender(ItemTypes.List, spec => <DroppedList key={spec.key} spec={spec} />)
 
 function makeDragable(name, type) {
   const elemSource = {
@@ -68,9 +59,6 @@ function makeDragable(name, type) {
 
   return DragSource(type, elemSource, collect)(DraggleElement)
 }
-
-export const Input = makeDragable("输入框", ItemTypes.Input)
-export const List = makeDragable("列表", ItemTypes.Input)
 
 function makeDropable(types, Elem) {
   const dropTarget = {
@@ -113,4 +101,9 @@ function makeDropable(types, Elem) {
   }
   return DropTarget(types, dropTarget, collect)(DropableElement)
 }
+
+export const DroppedInput = droppedElem(InputEl)
+export const DroppedList = droppedElem(WrapList(ListEl), dropDropable(ItemTypes.Input))
+export const Input = makeDragable("输入框", ItemTypes.Input)
+export const List = makeDragable("列表", ItemTypes.Input)
 export const Workspace = makeDropable([ItemTypes.Input, ItemTypes.List], WorkspaceEl)

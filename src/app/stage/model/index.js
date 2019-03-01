@@ -18,6 +18,9 @@ export function observe(o) {
   }
   observer = o
   emitChange()
+  return () => {
+    observer = null
+  }
 }
 
 export function addChild(parentSpec, childSpec) {

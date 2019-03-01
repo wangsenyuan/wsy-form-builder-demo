@@ -1,11 +1,15 @@
 import React from 'react'
 import ItemTypes from '../constants'
-import { Workspace, Input, List } from './dnd'
+import { Workspace, Input, List, DroppedInput, DroppedList } from './dnd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import "./index.scss"
 import { observe, getCurrentSpec } from './model'
 import { Tabs } from 'antd'
+import { registerRender } from '../workspace'
+
+registerRender(ItemTypes.Input, spec => <DroppedInput key={spec.key} spec={spec} />)
+registerRender(ItemTypes.List, spec => <DroppedList key={spec.key} spec={spec} />)
 
 function Sidebar(rootSpec) {
   return <Tabs defaultActiveKey="1">
@@ -32,7 +36,7 @@ function Stage({ rootSpec }) {
   )
 }
 
-class ObervedStage extends React.Component {
+class ObervingStage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -41,9 +45,16 @@ class ObervedStage extends React.Component {
   }
 
   componentDidMount() {
-    observe(rootSpec => {
+    this.unObserve = observe(rootSpec => {
       this.setState(rootSpec)
     })
+  }
+
+  componentWillUnmount() {
+    if (this.unObserve) {
+      this.unObserve()
+      this.unObserve = null
+    }
   }
 
   render() {
@@ -52,4 +63,4 @@ class ObervedStage extends React.Component {
 }
 
 
-export default DragDropContext(HTML5Backend)(ObervedStage)
+export default DragDropContext(HTML5Backend)(ObervingStage)
