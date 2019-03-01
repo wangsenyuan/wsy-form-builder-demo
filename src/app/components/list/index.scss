@@ -1,14 +1,21 @@
 div.list {
   background-color: none;
-  min-height: 20em;
+  align-items: stretch;
 }
 
 div.vertical-list {
   display: flex;
   flex-flow: column;
+  min-height: 20em;
 }
 
 div.horizontal-list {
   display: flex;
-  flex-flow: row;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  min-height: 6em;
+  div.dropped {
+    flex-grow: 1;
+    flex-basis: 20%;
+  }
 }

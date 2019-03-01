@@ -30,7 +30,7 @@ export function WrapList(List) {
     let { spec } = props
     let { children } = spec
     // console.log('WrapList render children (' + length(children) + ') children')
-    return <List>
+    return <List spec={spec}>
       {children && children.map(child => renderChild(child))}
     </List>
   }

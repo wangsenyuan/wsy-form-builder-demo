@@ -1,7 +1,5 @@
 div.dropable-container {
   > div {
-    display: flex;
-    flex-flow: column;
     width: 100%;
   }
 
@@ -46,7 +44,7 @@ div.dropable-container {
   }
 
   div.dropped.droppable {
-    min-height: 10em;
     height: 100%;
+    padding-right: 20px;
   }
 }

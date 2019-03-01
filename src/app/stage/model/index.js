@@ -74,8 +74,9 @@ export const editSpec = (spec) => {
       }
     } else {
       cur.config = { ...spec.config }
+      // console.log('spec config to (' + JSON.stringify(cur.config) + ')')
     }
-    return cur
+    return { ...cur }
   }
 
   if (!spec.config) {

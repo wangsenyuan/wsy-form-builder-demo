@@ -13,6 +13,17 @@ class ListEditor extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.spec === null || prevProps.spec.key !== this.props.spec.key) {
+      let config = {
+        flexDirection: this.props.spec.config.flexDirection
+      }
+      console.log('update ListEditor(' + JSON.stringify(config) + ')')
+
+      this.setState({ config })
+    }
+  }
+
   handleSubmit = evt => {
     evt.preventDefault()
     let { spec } = this.props
@@ -31,7 +42,7 @@ class ListEditor extends React.Component {
       <div>
         <Form onSubmit={this.handleSubmit} className="list-spec-edit-form">
           <Form.Item>
-            <Select defaultValue={this.state.config.flexDirection} onChange={this.handleChange}>
+            <Select value={this.state.config.flexDirection} onChange={this.handleChange}>
               <Select.Option value="vertical">垂直</Select.Option>
               <Select.Option value="horizontal">水平</Select.Option>
             </Select>
@@ -48,6 +59,7 @@ class ListEditor extends React.Component {
 }
 
 export default function ListEditorFn(props) {
+  // console.log('ListEditor(' + JSON.stringify(props) + ')')
   return <ListEditor {...props} />
 }
 
