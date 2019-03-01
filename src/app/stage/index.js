@@ -4,49 +4,62 @@ import { Workspace, Input, List, DroppedInput, DroppedList } from './dnd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import "./index.scss"
-import { observe, getCurrentSpec } from './model'
+import { observe, getCurrentModel, changeTabKey } from './model'
 import { Tabs } from 'antd'
 import { registerRender } from '../workspace'
+import InputEditor from './property/editors/input'
+import ListEditor from './property/editors/list'
+import { registerPropertyEditor, Editor as PropertyEditor } from './property'
 
 registerRender(ItemTypes.Input, spec => <DroppedInput key={spec.key} spec={spec} />)
 registerRender(ItemTypes.List, spec => <DroppedList key={spec.key} spec={spec} />)
 
-function Sidebar(rootSpec) {
-  return <Tabs defaultActiveKey="1">
-    <Tabs.TabPane tab="Widgets" key="1">
+registerPropertyEditor(ItemTypes.Input, InputEditor)
+registerPropertyEditor(ItemTypes.List, ListEditor)
+
+function Sidebar({ model }) {
+  return <Tabs activeKey={model.activeTabKey} onChange={changeTabKey}>
+    <Tabs.TabPane tab="Widgets" key="widgets-tab">
       <Input className="drag-item" spec={{ type: ItemTypes.Input, leaf: true, name: "输入框" }} />
-      <List className="drag-item" spec={{ type: ItemTypes.List, leaf: false, name: "列表" }} />
+      <List className="drag-item"
+        spec={{
+          type: ItemTypes.List,
+          leaf: false,
+          name: "列表",
+          config: { flexDirection: "vertical" }
+        }}
+      />
     </Tabs.TabPane>
-    <Tabs.TabPane tab="Property" key="2">
-      Properties Go Here
+    <Tabs.TabPane tab="Property" key="property-tab">
+      {model.editingSpec ? <PropertyEditor spec={model.editingSpec} /> : "Property"}
     </Tabs.TabPane>
   </Tabs>
 }
 
-function Stage({ rootSpec }) {
+function Stage({ model }) {
   return (
     <div className="stage">
       <div className="workspace">
-        <Workspace spec={rootSpec} />
+        <Workspace spec={model.rootSpec} />
       </div>
       <div className="sidebar">
-        <Sidebar rootSpec={rootSpec} />
+        <Sidebar model={model} />
       </div>
     </div>
   )
 }
 
-class ObervingStage extends React.Component {
+class ModelStage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      rootSpec: getCurrentSpec()
+      model: getCurrentModel()
     }
   }
 
   componentDidMount() {
-    this.unObserve = observe(rootSpec => {
-      this.setState(rootSpec)
+    this.unObserve = observe(model => {
+      this.setState(model)
     })
   }
 
@@ -58,9 +71,8 @@ class ObervingStage extends React.Component {
   }
 
   render() {
-    return <Stage rootSpec={this.state.rootSpec} />
+    return <Stage model={this.state.model} />
   }
 }
 
-
-export default DragDropContext(HTML5Backend)(ObervingStage)
+export default DragDropContext(HTML5Backend)(ModelStage)

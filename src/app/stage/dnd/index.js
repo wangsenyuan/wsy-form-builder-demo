@@ -5,7 +5,7 @@ import { Input as InputEl, Icon } from '../../components'
 import ListEl from '../../components/list'
 import WorkspaceEl, { WrapList } from '../../workspace'
 import "./index.scss"
-import { addChild } from '../model'
+import { addChild, startEditingSpec } from '../model'
 
 function dropDropable(types) {
   return (Elem, props) => {
@@ -23,7 +23,7 @@ function droppedElem(Elem, drop) {
     }
     return <div className={className}>
       {!drop ? <Elem {...props} /> : drop(Elem, props)}
-      <Icon type="edit" />
+      <Icon type="edit" onClick={() => startEditingSpec(props.spec)} />
       <Icon type="delete" />
       <Icon type="up" />
       <Icon type="down" />
@@ -33,10 +33,16 @@ function droppedElem(Elem, drop) {
 
 function makeDragable(name, type) {
   const elemSource = {
-    beginDrag(props) {
-      return {
-        spec: props.spec
-      };
+    beginDrag({ spec }) {
+      return { spec }
+    },
+    endDrag(props, monitor) {
+      if (!monitor.didDrop()) {
+        return
+      }
+      let { parentSpec } = monitor.getDropResult()
+
+      addChild(parentSpec, props.spec)
     }
   }
 
@@ -62,37 +68,37 @@ function makeDragable(name, type) {
 
 function makeDropable(types, Elem) {
   const dropTarget = {
-    canDrop(props) {
+    canDrop(props, monitor) {
       // console.log('check canDrop: ' + JSON.stringify(props))
       // console.log('workspace canDrop called: ' + JSON.stringify(props))
       // should determine by the type of target
-      return props && props.spec && props.spec.leaf === false
+      let ret = props && props.spec && props.spec.leaf === false && !monitor.didDrop()
+      // console.log('test canDrop => ' + ret)
+      return ret
     },
 
     drop(props, monitor) {
-      const hasDroppedOnChild = monitor.didDrop()
-      if (hasDroppedOnChild) {
-        console.log('has already dropped on child target')
+      if (monitor.didDrop()) {
+        // console.log('has already dropped on child target')
         return
       }
+      // console.log('drop here (' + JSON.stringify(props.spec) + ')')
       //should update the spec
       let parentSpec = props.spec
-      let item = monitor.getItem()
-      let childSpec = (item && item.spec && { ...item.spec }) || {}
-      addChild(parentSpec, childSpec)
+      // let item = monitor.getItem()
+      // let childSpec = (item && item.spec && { ...item.spec }) || {}
+      return { parentSpec }
     }
   }
 
-  function collect(connect, monitor) {
+  function collect(connect) {
     return {
-      connectDropTarget: connect.dropTarget(),
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop()
+      connectDropTarget: connect.dropTarget()
     }
   }
 
   function DropableElement(props) {
-    let { connectDropTarget, isOver, canDrop, ...rest } = props
+    let { connectDropTarget, ...rest } = props
     return connectDropTarget(
       <div className="dropable-container" style={{ position: 'relative', width: '100%', height: '100%' }}>
         <Elem {...rest} />

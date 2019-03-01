@@ -4,12 +4,14 @@ import "./index.scss"
 export default function List(props) {
   let { spec, children } = props
 
-  let horizontal = (spec && spec.config && spec.config.horizontal) || false
+  let flexDirection = (spec && spec.config && spec.config.flexDirection) || "vertical"
 
-  let className = (horizontal && "horizontal-list") || "vertical-list"
+  let className = flexDirection + "-list"
 
   className += " list"
 
+  // console.log('List className = ' + className)
+  
   return <div className={className}>
     {children}
   </div>

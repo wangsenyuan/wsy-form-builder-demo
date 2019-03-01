@@ -21,24 +21,15 @@ function renderChild(child) {
   if (!renders[child.type]) {
     return null
   }
-
-  console.log('will render child (' + child.type + ')')
-
+  // console.log('will render child (' + child.type + ')')
   return renders[child.type](child)
-}
-
-function length(arr) {
-  if (!arr) {
-    return 0
-  }
-  return arr.length
 }
 
 export function WrapList(List) {
   return (props) => {
     let { spec } = props
     let { children } = spec
-    console.log('WrapList render children (' + length(children) + ') children')
+    // console.log('WrapList render children (' + length(children) + ') children')
     return <List>
       {children && children.map(child => renderChild(child))}
     </List>
