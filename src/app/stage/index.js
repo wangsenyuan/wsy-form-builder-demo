@@ -1,6 +1,6 @@
 import React from 'react'
 import ItemTypes from '../constants'
-import { Workspace, Input, List, DroppedInput, DroppedList } from './dnd'
+import { Workspace, Input, List, makeDropElement, makeDropList } from './dnd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import "./index.scss"
@@ -8,9 +8,6 @@ import { observe, getCurrentModel, changeTabKey } from './model'
 import { Tabs } from 'antd'
 import { registerRender } from './workspace'
 import { registerPropertyEditor, Editor as PropertyEditor } from './property'
-
-registerRender(ItemTypes.Input, spec => <DroppedInput key={spec.key} spec={spec} />)
-registerRender(ItemTypes.List, spec => <DroppedList key={spec.key} spec={spec} />)
 
 function Sidebar({ model }) {
   return <Tabs activeKey={model.activeTabKey} onChange={changeTabKey}>
@@ -72,6 +69,10 @@ class ModelStage extends React.Component {
 
 export const pluginElementPropertyEditoros = fn => {
   fn(registerPropertyEditor)
+}
+
+export const pluginDropElementRenders = fn => {
+  fn(registerRender, makeDropElement, makeDropList)
 }
 
 export default DragDropContext(HTML5Backend)(ModelStage)

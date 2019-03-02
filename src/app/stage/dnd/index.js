@@ -1,8 +1,8 @@
 import React from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
 import ItemTypes from '../../constants'
-import { Input as InputEl, Icon } from '../../components'
-import ListEl from '../../components/list'
+import { Icon } from '../../components'
+// import ListEl from '../../components/list'
 import WorkspaceEl, { WrapList } from '../workspace'
 import "./index.scss"
 import { addSpec, startEditingSpec, removeSpec, upSpec, downSpec } from '../model'
@@ -108,8 +108,11 @@ function makeDropable(types, Elem) {
   return DropTarget(types, dropTarget, collect)(DropableElement)
 }
 
-export const DroppedInput = droppedElem(InputEl)
-export const DroppedList = droppedElem(WrapList(ListEl), dropDropable(ItemTypes.Input))
+// export const DroppedInput = droppedElem(InputEl)
+// export const DroppedList = droppedElem(WrapList(ListEl), dropDropable(ItemTypes.Input))
 export const Input = makeDragable("输入框", ItemTypes.Input)
 export const List = makeDragable("列表", ItemTypes.Input)
 export const Workspace = makeDropable([ItemTypes.Input, ItemTypes.List], WorkspaceEl)
+
+export const makeDropElement = droppedElem
+export const makeDropList = (acceptType, Elem) => droppedElem(WrapList(Elem), dropDropable(acceptType))
