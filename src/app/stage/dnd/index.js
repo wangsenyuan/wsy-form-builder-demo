@@ -1,7 +1,7 @@
 import React from 'react'
 import { DragSource, DropTarget } from 'react-dnd'
 import ItemTypes from '../../constants'
-import { Icon } from '../../components'
+import { Icon } from 'antd'
 // import ListEl from '../../components/list'
 import WorkspaceEl, { WrapList } from '../workspace'
 import "./index.scss"
