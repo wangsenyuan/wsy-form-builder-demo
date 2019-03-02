@@ -93,3 +93,95 @@ export const changeTabKey = (key) => {
   model.activeTabKey = key
   emitChange()
 }
+
+export const removeSpec = (spec) => {
+  console.log('will remove spec (' + JSON.stringify(spec) + ")")
+  function loop(parent) {
+    if (parent.leaf) {
+      return parent
+    }
+
+    if (!parent.children) {
+      return parent
+    }
+
+    // let newChildren = parent.children.filter(item => item.key !== spec.key)
+    let i = parent.children.findIndex(item => item.key === spec.key)
+    if (i >= 0) {
+      //removed
+      parent.children.splice(i, 1)
+    } else {
+      //dfs
+      parent.children = parent.children.map(loop)
+    }
+
+
+    return { ...parent }
+  }
+
+  model.rootSpec = loop({ ...model.rootSpec })
+  emitChange()
+}
+
+export function upSpec(spec) {
+  function loop(parent) {
+    if (parent.leaf) {
+      return parent
+    }
+
+    if (!parent.children) {
+      return parent
+    }
+
+    // let newChildren = parent.children.filter(item => item.key !== spec.key)
+    let i = parent.children.findIndex(item => item.key === spec.key)
+    if (i === 0) {
+      //can't up anymore
+      //parent.children.splice(i, 1)
+    }  else if(i > 0) {
+      // take it
+      let [item] = parent.children.splice(i, 1)
+      parent.children.splice(i-1, 0, item)
+    } else {
+      //dfs
+      parent.children = parent.children.map(loop)
+    }
+
+    return { ...parent }
+  }
+
+  model.rootSpec = loop(model.rootSpec)
+  emitChange()
+}
+
+
+export function downSpec(spec) {
+  function loop(parent) {
+    if (parent.leaf) {
+      return parent
+    }
+
+    if (!parent.children) {
+      return parent
+    }
+
+    // let newChildren = parent.children.filter(item => item.key !== spec.key)
+    let i = parent.children.findIndex(item => item.key === spec.key)
+    if (i === parent.children.length - 1) {
+      //can't up anymore
+      //parent.children.splice(i, 1)
+    }  else if(i >= 0) {
+      // take next
+      let [item] = parent.children.splice(i + 1, 1)
+      parent.children.splice(i, 0, item)
+    } else {
+      //dfs
+      parent.children = parent.children.map(loop)
+    }
+
+    return { ...parent }
+  }
+
+  model.rootSpec = loop(model.rootSpec)
+  emitChange()
+}

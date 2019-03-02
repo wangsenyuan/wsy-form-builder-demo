@@ -5,7 +5,7 @@ import { Input as InputEl, Icon } from '../../components'
 import ListEl from '../../components/list'
 import WorkspaceEl, { WrapList } from '../../workspace'
 import "./index.scss"
-import { addChild, startEditingSpec } from '../model'
+import { addChild, startEditingSpec, removeSpec, upSpec, downSpec } from '../model'
 
 function dropDropable(types) {
   return (Elem, props) => {
@@ -24,9 +24,9 @@ function droppedElem(Elem, drop) {
     return <div className={className}>
       {!drop ? <Elem {...props} /> : drop(Elem, props)}
       <Icon type="edit" onClick={() => startEditingSpec(props.spec)} />
-      <Icon type="delete" />
-      <Icon type="up" />
-      <Icon type="down" />
+      <Icon type="delete" onClick={() => removeSpec(props.spec)} />
+      <Icon type="up" onClick={() => upSpec(props.spec)} />
+      <Icon type="down" onClick={() => downSpec(props.spec)} />
     </div>
   }
 }
