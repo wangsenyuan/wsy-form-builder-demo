@@ -1,6 +1,6 @@
 import React from 'react'
 import Stage, { pluginElementPropertyEditoros, pluginDropElementRenders, pluginWidgets } from './stage'
-import ItemTypes from './constants'
+import ItemTypes from './stage/constants'
 import InputEditor from './components/editors/input'
 import ListEditor from './components/editors/list'
 import { Input } from './components'
