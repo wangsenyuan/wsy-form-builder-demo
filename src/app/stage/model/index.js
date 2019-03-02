@@ -35,7 +35,7 @@ export function observe(o) {
   }
 }
 
-export function addChild(parentSpec, childSpec) {
+export function addSpec(parentSpec, childSpec) {
   console.log('addChild called')
   function loop(cur) {
     if (cur.key === parentSpec.key) {

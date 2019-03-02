@@ -5,7 +5,7 @@ import { Input as InputEl, Icon } from '../../components'
 import ListEl from '../../components/list'
 import WorkspaceEl, { WrapList } from '../../workspace'
 import "./index.scss"
-import { addChild, startEditingSpec, removeSpec, upSpec, downSpec } from '../model'
+import { addSpec, startEditingSpec, removeSpec, upSpec, downSpec } from '../model'
 
 function dropDropable(types) {
   return (Elem, props) => {
@@ -42,7 +42,7 @@ function makeDragable(name, type) {
       }
       let { parentSpec } = monitor.getDropResult()
 
-      addChild(parentSpec, props.spec)
+      addSpec(parentSpec, props.spec)
     }
   }
 
