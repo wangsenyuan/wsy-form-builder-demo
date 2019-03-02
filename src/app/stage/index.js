@@ -76,7 +76,7 @@ export const pluginWidgets = fn => {
   }
   widgets = res.map(w => {
     let Item = makeDragable(w.name, w.type)
-    return props => <Item className="drag-item" spec={w.spec} {...props} />
+    return props => <Item key={w.spec.name} className="drag-item" spec={w.spec} {...props} />
   })
 }
 
