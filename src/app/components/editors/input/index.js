@@ -1,6 +1,5 @@
 import React from 'react'
 import { Form, Button, Input } from 'antd'
-import { editSpec } from '../../../model'
 
 class InputEditor extends React.Component {
   constructor(props) {
@@ -29,7 +28,7 @@ class InputEditor extends React.Component {
     evt.preventDefault()
     let { spec } = this.props
     let { config } = this.state
-    editSpec({ config, key: spec.key })
+    this.props.editSpec({ config, key: spec.key })
   }
 
   render() {
@@ -50,6 +49,6 @@ class InputEditor extends React.Component {
   }
 }
 
-export default function Fn(props) {
-  return <InputEditor {...props} />
+export default function Fn(props, editSpec) {
+  return <InputEditor {...props} editSpec={editSpec} />
 }

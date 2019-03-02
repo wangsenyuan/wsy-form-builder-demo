@@ -1,3 +1,5 @@
+import { editSpec } from '../model'
+
 let editors = {}
 
 export const registerPropertyEditor = (type, editor) => {
@@ -21,5 +23,5 @@ export const Editor = (props) => {
     console.log('no property editor found for ' + spec.type)
     return null
   }
-  return editors[spec.type](props)
+  return editors[spec.type](props, editSpec)
 }

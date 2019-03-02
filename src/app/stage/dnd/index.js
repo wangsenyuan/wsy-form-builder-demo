@@ -3,7 +3,7 @@ import { DragSource, DropTarget } from 'react-dnd'
 import ItemTypes from '../../constants'
 import { Input as InputEl, Icon } from '../../components'
 import ListEl from '../../components/list'
-import WorkspaceEl, { WrapList } from '../../workspace'
+import WorkspaceEl, { WrapList } from '../workspace'
 import "./index.scss"
 import { addSpec, startEditingSpec, removeSpec, upSpec, downSpec } from '../model'
 

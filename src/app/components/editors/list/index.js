@@ -1,5 +1,4 @@
 import React from 'react'
-import { editSpec } from '../../../model'
 import { Form, Select, Button } from 'antd'
 
 class ListEditor extends React.Component {
@@ -28,7 +27,7 @@ class ListEditor extends React.Component {
     evt.preventDefault()
     let { spec } = this.props
     let { config } = this.state
-    editSpec({ config, key: spec.key })
+    this.props.editSpec({ config, key: spec.key })
   }
 
   handleChange = value => {
@@ -58,8 +57,8 @@ class ListEditor extends React.Component {
   }
 }
 
-export default function ListEditorFn(props) {
+export default function ListEditorFn(props, editSpec) {
   // console.log('ListEditor(' + JSON.stringify(props) + ')')
-  return <ListEditor {...props} />
+  return <ListEditor {...props} editSpec={editSpec} />
 }
 
