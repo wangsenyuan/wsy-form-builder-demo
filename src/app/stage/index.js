@@ -1,6 +1,6 @@
 import React from 'react'
-import ItemTypes from '../constants'
-import { Workspace, Input, List, makeDropElement, makeDropList } from './dnd'
+// import ItemTypes from '../constants'
+import { Workspace, makeDropElement, makeDropList, makeDragable } from './dnd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import "./index.scss"
@@ -9,18 +9,12 @@ import { Tabs } from 'antd'
 import { registerRender } from './workspace'
 import { registerPropertyEditor, Editor as PropertyEditor } from './property'
 
+let widgets = []
+
 function Sidebar({ model }) {
   return <Tabs activeKey={model.activeTabKey} onChange={changeTabKey}>
     <Tabs.TabPane tab="Widgets" key="widgets-tab">
-      <Input className="drag-item" spec={{ type: ItemTypes.Input, leaf: true, name: "输入框" }} />
-      <List className="drag-item"
-        spec={{
-          type: ItemTypes.List,
-          leaf: false,
-          name: "列表",
-          config: { flexDirection: "vertical" }
-        }}
-      />
+      {widgets.map(w => w())}
     </Tabs.TabPane>
     <Tabs.TabPane tab="Property" key="property-tab">
       {model.editingSpec ? <PropertyEditor spec={model.editingSpec} /> : "Property"}
@@ -73,6 +67,17 @@ export const pluginElementPropertyEditoros = fn => {
 
 export const pluginDropElementRenders = fn => {
   fn(registerRender, makeDropElement, makeDropList)
+}
+
+export const pluginWidgets = fn => {
+  let res = fn()
+  if (!res) {
+    throw new Error("need widgets")
+  }
+  widgets = res.map(w => {
+    let Item = makeDragable(w.name, w.type)
+    return props => <Item className="drag-item" spec={w.spec} {...props} />
+  })
 }
 
 export default DragDropContext(HTML5Backend)(ModelStage)

@@ -31,41 +31,6 @@ function droppedElem(Elem, drop) {
   }
 }
 
-function makeDragable(name, type) {
-  const elemSource = {
-    beginDrag({ spec }) {
-      return { spec }
-    },
-    endDrag(props, monitor) {
-      if (!monitor.didDrop()) {
-        return
-      }
-      let { parentSpec } = monitor.getDropResult()
-
-      addSpec(parentSpec, props.spec)
-    }
-  }
-
-  function collect(connect, monitor) {
-    return {
-      connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging()
-    }
-  }
-
-  function DraggleElement(props) {
-    let { connectDragSource } = props
-
-    return connectDragSource(
-      <div style={{ width: '100%', cursor: "pointer" }}>
-        <span>{name}</span>
-      </div>
-    )
-  }
-
-  return DragSource(type, elemSource, collect)(DraggleElement)
-}
-
 function makeDropable(types, Elem) {
   const dropTarget = {
     canDrop(props, monitor) {
@@ -108,11 +73,45 @@ function makeDropable(types, Elem) {
   return DropTarget(types, dropTarget, collect)(DropableElement)
 }
 
+export function makeDragable(name, type) {
+  const elemSource = {
+    beginDrag({ spec }) {
+      return { spec }
+    },
+    endDrag(props, monitor) {
+      if (!monitor.didDrop()) {
+        return
+      }
+      let { parentSpec } = monitor.getDropResult()
+
+      addSpec(parentSpec, props.spec)
+    }
+  }
+
+  function collect(connect, monitor) {
+    return {
+      connectDragSource: connect.dragSource(),
+      isDragging: monitor.isDragging()
+    }
+  }
+
+  function DraggleElement(props) {
+    let { connectDragSource } = props
+
+    return connectDragSource(
+      <div style={{ width: '100%', cursor: "pointer" }}>
+        <span>{name}</span>
+      </div>
+    )
+  }
+
+  return DragSource(type, elemSource, collect)(DraggleElement)
+}
+
 // export const DroppedInput = droppedElem(InputEl)
 // export const DroppedList = droppedElem(WrapList(ListEl), dropDropable(ItemTypes.Input))
-export const Input = makeDragable("输入框", ItemTypes.Input)
-export const List = makeDragable("列表", ItemTypes.Input)
+// export const Input = makeDragable("输入框", ItemTypes.Input)
+// export const List = makeDragable("列表", ItemTypes.Input)
 export const Workspace = makeDropable([ItemTypes.Input, ItemTypes.List], WorkspaceEl)
-
 export const makeDropElement = droppedElem
 export const makeDropList = (acceptType, Elem) => droppedElem(WrapList(Elem), dropDropable(acceptType))
