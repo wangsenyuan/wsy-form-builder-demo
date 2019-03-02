@@ -57,7 +57,7 @@ function makeDragable(name, type) {
     let { connectDragSource } = props
 
     return connectDragSource(
-      <div style={{ width: '100%' }}>
+      <div style={{ width: '100%', cursor: "pointer" }}>
         <span>{name}</span>
       </div>
     )
