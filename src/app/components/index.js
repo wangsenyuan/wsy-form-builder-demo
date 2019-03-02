@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input as InputEl, Icon as IconEl } from 'antd'
+import { Input as InputEl } from 'antd'
 import "./index.scss"
 
 export function Input(props) {
@@ -10,5 +10,3 @@ export function Input(props) {
     <InputEl {...rest} className={"item"} placeholder={label} />
   )
 }
-
-export const Icon = IconEl
