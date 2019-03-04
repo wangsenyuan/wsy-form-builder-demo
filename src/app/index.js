@@ -1,5 +1,5 @@
 import React from 'react'
-import Stage, { pluginElementPropertyEditoros, pluginDropElementRenders, pluginWidgets } from './stage'
+import Stage, { pluginElementPropertyEditoros, pluginDropElementRenders, pluginWidgets } from 'wsy-form-builder'
 import ItemTypes from './stage/constants'
 import InputEditor from './components/editors/input'
 import ListEditor from './components/editors/list'
