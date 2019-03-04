@@ -11321,10 +11321,10 @@ ws@^5.2.0:
   dependencies:
     async-limiter "~1.0.0"
 
-wsy-form-builder@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/wsy-form-builder/-/wsy-form-builder-0.0.1.tgz#a4fa581e33ffa3de4f38b5b4a7ea35c1131cabf1"
-  integrity sha512-ApDN5/6+UyXFxaGiXIm0iZo8giEyoWc4K/12ONOouVk2eQeI8uBZFTkGfHSvyc+z2gqs1OFOE8/5UvPtGjhFoA==
+wsy-form-builder@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/wsy-form-builder/-/wsy-form-builder-0.0.4.tgz#de757bcec1fe6cfe7fed80b75aed41644df9c508"
+  integrity sha512-4NikUjBYVTVO8YeO1LFQYi+HRgmoagUMvOrqkW4+N/Yl/UwVZNGhJQUf3GR6NxQlhCDRJZOFW/QUFB5xJNjMfg==
   dependencies:
     antd "^3.14.1"
     random-string "^0.2.0"
