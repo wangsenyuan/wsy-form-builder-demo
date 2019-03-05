@@ -6,13 +6,15 @@ import ListEditor from './components/editors/list'
 import { Input } from './components'
 import List from './components/list'
 
-pluginWidgets(() => {
-  return [
+pluginWidgets((makeDragable) => {
+  let widgets = [
     {
       name: "输入框",
       type: ItemTypes.Input,
       spec: {
-        type: ItemTypes.Input, leaf: true, name: "输入框"
+        type: ItemTypes.Input,
+        leaf: true,
+        name: "输入框"
       }
     },
     {
@@ -26,13 +28,18 @@ pluginWidgets(() => {
       }
     }
   ]
+
+  return () => widgets.map(widget => {
+    let Item = makeDragable(widget.name, widget.type)
+    return <Item key={widget.name} className="drag-item" spec={widget.spec} />
+  })
 })
 
 pluginDropElementRenders((registerRender, makeDropElement, makeDropList) => {
   let DroppedInput = makeDropElement(Input)
   registerRender(ItemTypes.Input, spec => <DroppedInput key={spec.key} spec={spec} />)
 
-  let DroppedList = makeDropList(ItemTypes.Input, List)
+  let DroppedList = makeDropList([ItemTypes.Input, ItemTypes.List], List)
   registerRender(ItemTypes.List, spec => <DroppedList key={spec.key} spec={spec} />)
 })
 
