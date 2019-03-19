@@ -11,7 +11,7 @@
     "react-dnd-html5-backend": "^7.0.2",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5",
-    "wsy-form-builder": "^0.0.7"
+    "wsy-form-builder": "^0.0.8"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -48,6 +48,13 @@ pluginElementPropertyEditoros((registerPropertyEditor) => {
   registerPropertyEditor(ItemTypes.List, ListEditor)
 })
 
+const onSpecChange = (spec) => {
+  console.table(spec)
+}
+
 export default function App(props) {
-  return <Stage {...props} dndItemTypes={[ItemTypes.List, ItemTypes.Input]} />
+  return <Stage {...props}
+    dndItemTypes={[ItemTypes.List, ItemTypes.Input]}
+    onSpecChange={onSpecChange}
+  />
 }
